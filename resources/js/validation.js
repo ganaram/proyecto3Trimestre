@@ -11,74 +11,27 @@ function asociarEventos(){
     });
 
     $("#mail").change(function(event){
-        let errors = validacionEmail();
-        $("#mail").removeClass("is-valid is-invalid");
-        $("#errorsMail").empty();
-        if(errors.length===0){
-            $("#mail").addClass("is-valid");
-            $("#errorsMail").removeClass("alert alert-danger");
-        }else{
-            $("#mail").addClass("is-invalid");
-            $("#errorsMail").addClass("alert alert-danger");
-            errors.forEach(error => $("#errorsMail").append(`<span>${error}</span>`));
-        }
+        validacionEmail();
+
     })
 
     $("#pwd").change(function(event){
-        let errors = validacionContra();
-        $("#pwd").removeClass("is-valid is-invalid");
-        $("#errorsPwd").empty();
-        if(errors.length===0){
-            $("#pwd").addClass("is-valid");
-            $("#errorsPwd").removeClass("alert alert-danger")
-        }else{
-            $("#errorsPwd").addClass("alert alert-danger");
-            $("#pwd").addClass("is-invalid");
-            errors.forEach(error => $("#errorsPwd").append(`<span>${error}</span>`));
-        }
+        validacionContra()
     })
 
     $("#terms").change(function(event){
-        let errors = validacionCheckbox();
-        $("#terms").removeClass("is-valid is-invalid");
-        $("#errorsTerms").empty();
-        if(errors.length===0){
-            $("#terms").addClass("is-valid");
-            $("#errorsTerms").removeClass("alert alert-danger")
-        }else{
-            $("#errorsTerms").addClass("alert alert-danger");
-            $("#terms").addClass("is-invalid");
-            errors.forEach(error => $("#errorsTerms").append(`<span>${error}</span>`));
-        }
+        validacionCheckbox()
     })
 
     $("#selector").change(function(event){
-        let errors = validacionSelect();
-        $("#selector").removeClass("is-valid is-invalid");
-        $("#errorsSelect").empty();
-        if(errors.length===0){
-            $("#selector").addClass("is-valid");
-            $("#errorsSelect").removeClass("alert alert-danger")
-        }else{
-            $("#errorsSelect").addClass("alert alert-danger");
-            $("#selector").addClass("is-invalid");
-            errors.forEach(error => $("#errorsSelect").append(`<span>${error}</span>`));
-        }
+        validacionSelect();
     })
 
     $("#age").change(function(event){
-        let errors = validacionAge();
-        $("#age").removeClass("is-valid is-invalid");
-        $("#errorsAge").empty();
-        if(errors.length===0){
-            $("#age").addClass("is-valid");
-            $("#errorsAge").removeClass("alert alert-danger")
-        }else{
-            $("#errorsAge").addClass("alert alert-danger");
-            $("#age").addClass("is-invalid");
-            errors.forEach(error => $("#errorsAge").append(`<span>${error}</span>`));
-        }
+        validacionAge();
     })
+
+    $().alert();
 
 }
 
@@ -95,7 +48,9 @@ function validacionEmail(){
         errors.push("The mail does not match our validation rules.");
     }
 
-    return errors;
+    let esCorrecto = imprimeErrores("#mail","#errorsMail",errors);
+
+    return esCorrecto;
 
 }
 
@@ -110,12 +65,32 @@ function validacionContra(){
     if(!regex.test(pwd)){
         errors.push("Your password should contain eight characters, one letter and one number.")
     }
-    return errors;
+
+    let esCorrecto = imprimeErrores("#pwd","#errorsPwd",errors);
+
+    return esCorrecto;
 }
 
 function validacionForm(){
 
-   
+    let errors = []
+
+    $(txt).remove();
+
+    let txt = `<span>Check your form and correct the errors.</span>`;
+
+    let esEmailCorrecto = validacionEmail();
+    let esAgeCorrecta = validacionAge();
+    let esCheckboxCorrecto = validacionCheckbox();
+    let esContraCorrecta = validacionContra();
+    let esSelectCorrecto = validacionSelect();
+
+    if(esAgeCorrecta && esCheckboxCorrecto && esContraCorrecta && esEmailCorrecto && esSelectCorrecto){
+        $("formTest").submit();
+        $('#successForm').modal('toggle')
+    }else{
+        $('#errorsForm').modal('toggle')
+    }
 
 }
 
@@ -127,7 +102,9 @@ function validacionSelect(){
         errors.push("You have to select an accout type.")
     }
 
-    return errors;
+    let esCorrecto = imprimeErrores("#selector","#errorsSelect",errors);
+
+    return esCorrecto;
 
 }
 
@@ -140,7 +117,10 @@ function validacionAge(){
     }if(!$.isNumeric($("#age").val())){
         errors.push("You have to introduce a numeric value.")
     }
-    return errors;
+
+    let esCorrecto = imprimeErrores("#age","#errorsAge",errors);
+
+    return esCorrecto;
 }
 
 function validacionCheckbox(){
@@ -151,5 +131,24 @@ function validacionCheckbox(){
         errors.push("You have to agree our terms.");
     }
 
-    return errors;
+    let esCorrecto = imprimeErrores("#terms","#errorsTerms",errors);
+
+    return esCorrecto;
+}
+
+function imprimeErrores(campo,campoErrores, errors){
+    let esCorrecto = false;
+    $(campo).removeClass("is-valid is-invalid");
+    $(campoErrores).empty();
+    if(errors.length===0){
+        $(campo).addClass("is-valid");
+        $(campoErrores).removeClass("alert alert-danger");
+        esCorrecto = true;
+    }else{
+        esCorrecto = false;
+        $(campo).addClass("is-invalid");
+        $(campoErrores).addClass("alert alert-danger");
+        errors.forEach(error => $(campoErrores).append(`<span>${error}</span>`));
+    }
+    return esCorrecto;
 }

@@ -103,85 +103,21 @@ function asociarEventos() {
     validacionForm();
   });
   $("#mail").change(function (event) {
-    var errors = validacionEmail();
-    $("#mail").removeClass("is-valid is-invalid");
-    $("#errorsMail").empty();
-
-    if (errors.length === 0) {
-      $("#mail").addClass("is-valid");
-      $("#errorsMail").removeClass("alert alert-danger");
-    } else {
-      $("#mail").addClass("is-invalid");
-      $("#errorsMail").addClass("alert alert-danger");
-      errors.forEach(function (error) {
-        return $("#errorsMail").append("<span>".concat(error, "</span>"));
-      });
-    }
+    validacionEmail();
   });
   $("#pwd").change(function (event) {
-    var errors = validacionContra();
-    $("#pwd").removeClass("is-valid is-invalid");
-    $("#errorsPwd").empty();
-
-    if (errors.length === 0) {
-      $("#pwd").addClass("is-valid");
-      $("#errorsPwd").removeClass("alert alert-danger");
-    } else {
-      $("#errorsPwd").addClass("alert alert-danger");
-      $("#pwd").addClass("is-invalid");
-      errors.forEach(function (error) {
-        return $("#errorsPwd").append("<span>".concat(error, "</span>"));
-      });
-    }
+    validacionContra();
   });
   $("#terms").change(function (event) {
-    var errors = validacionCheckbox();
-    $("#terms").removeClass("is-valid is-invalid");
-    $("#errorsTerms").empty();
-
-    if (errors.length === 0) {
-      $("#terms").addClass("is-valid");
-      $("#errorsTerms").removeClass("alert alert-danger");
-    } else {
-      $("#errorsTerms").addClass("alert alert-danger");
-      $("#terms").addClass("is-invalid");
-      errors.forEach(function (error) {
-        return $("#errorsTerms").append("<span>".concat(error, "</span>"));
-      });
-    }
+    validacionCheckbox();
   });
   $("#selector").change(function (event) {
-    var errors = validacionSelect();
-    $("#selector").removeClass("is-valid is-invalid");
-    $("#errorsSelect").empty();
-
-    if (errors.length === 0) {
-      $("#selector").addClass("is-valid");
-      $("#errorsSelect").removeClass("alert alert-danger");
-    } else {
-      $("#errorsSelect").addClass("alert alert-danger");
-      $("#selector").addClass("is-invalid");
-      errors.forEach(function (error) {
-        return $("#errorsSelect").append("<span>".concat(error, "</span>"));
-      });
-    }
+    validacionSelect();
   });
   $("#age").change(function (event) {
-    var errors = validacionAge();
-    $("#age").removeClass("is-valid is-invalid");
-    $("#errorsAge").empty();
-
-    if (errors.length === 0) {
-      $("#age").addClass("is-valid");
-      $("#errorsAge").removeClass("alert alert-danger");
-    } else {
-      $("#errorsAge").addClass("alert alert-danger");
-      $("#age").addClass("is-invalid");
-      errors.forEach(function (error) {
-        return $("#errorsAge").append("<span>".concat(error, "</span>"));
-      });
-    }
+    validacionAge();
   });
+  $().alert();
 }
 
 function validacionEmail() {
@@ -193,7 +129,8 @@ function validacionEmail() {
     errors.push("The mail does not match our validation rules.");
   }
 
-  return errors;
+  var esCorrecto = imprimeErrores("#mail", "#errorsMail", errors);
+  return esCorrecto;
 }
 
 function validacionContra() {
@@ -205,10 +142,27 @@ function validacionContra() {
     errors.push("Your password should contain eight characters, one letter and one number.");
   }
 
-  return errors;
+  var esCorrecto = imprimeErrores("#pwd", "#errorsPwd", errors);
+  return esCorrecto;
 }
 
-function validacionForm() {}
+function validacionForm() {
+  var errors = [];
+  $(txt).remove();
+  var txt = "<span>Check your form and correct the errors.</span>";
+  var esEmailCorrecto = validacionEmail();
+  var esAgeCorrecta = validacionAge();
+  var esCheckboxCorrecto = validacionCheckbox();
+  var esContraCorrecta = validacionContra();
+  var esSelectCorrecto = validacionSelect();
+
+  if (esAgeCorrecta && esCheckboxCorrecto && esContraCorrecta && esEmailCorrecto && esSelectCorrecto) {
+    $("formTest").submit();
+    $('#successForm').modal('toggle');
+  } else {
+    $('#errorsForm').modal('toggle');
+  }
+}
 
 function validacionSelect() {
   var errors = [];
@@ -217,7 +171,8 @@ function validacionSelect() {
     errors.push("You have to select an accout type.");
   }
 
-  return errors;
+  var esCorrecto = imprimeErrores("#selector", "#errorsSelect", errors);
+  return esCorrecto;
 }
 
 function validacionAge() {
@@ -231,7 +186,8 @@ function validacionAge() {
     errors.push("You have to introduce a numeric value.");
   }
 
-  return errors;
+  var esCorrecto = imprimeErrores("#age", "#errorsAge", errors);
+  return esCorrecto;
 }
 
 function validacionCheckbox() {
@@ -241,7 +197,29 @@ function validacionCheckbox() {
     errors.push("You have to agree our terms.");
   }
 
-  return errors;
+  var esCorrecto = imprimeErrores("#terms", "#errorsTerms", errors);
+  return esCorrecto;
+}
+
+function imprimeErrores(campo, campoErrores, errors) {
+  var esCorrecto = false;
+  $(campo).removeClass("is-valid is-invalid");
+  $(campoErrores).empty();
+
+  if (errors.length === 0) {
+    $(campo).addClass("is-valid");
+    $(campoErrores).removeClass("alert alert-danger");
+    esCorrecto = true;
+  } else {
+    esCorrecto = false;
+    $(campo).addClass("is-invalid");
+    $(campoErrores).addClass("alert alert-danger");
+    errors.forEach(function (error) {
+      return $(campoErrores).append("<span>".concat(error, "</span>"));
+    });
+  }
+
+  return esCorrecto;
 }
 
 /***/ }),

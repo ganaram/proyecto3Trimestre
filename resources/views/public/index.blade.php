@@ -1,6 +1,7 @@
 @extends('public.layout')
 @section('content')
 <form id="formTest">
+<br>
 
   <div class="form-group">
     <label for="mail">Email address</label>
@@ -20,7 +21,7 @@
 
   <div class="form-group">
   <label for="selector">Account</label>
-  <select id="selector" class="form-control">
+  <select id="selector" class="custom-select">
         <option value="">Select an accout type...</option>
         <option value="free">Free</option>
         <option value="standard">Standard</option>
@@ -51,6 +52,45 @@
   </div>
 
   <button type="submit" class="btn btn-primary">Submit</button>
+
+  <div class="modal fade" id="errorsForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Incorrect Data!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      Check your form and correct the errors.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="successForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Correct data!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      All the data is correct, you can now login.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </form>
 @endsection
 
