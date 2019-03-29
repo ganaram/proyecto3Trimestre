@@ -1,91 +1,59 @@
 @extends('public.layout')
 @section('content')
-<form id="formTest">
+<form id="formTest" method="post">
 <br>
 
   <div class="form-group">
-    <label for="mail">Email address</label>
-    <input type="email" class="form-control" id="mail" aria-describedby="emailHelp" placeholder="Enter email">
-  </div>
-
-  <div id="errorsMail" role="alert"> 
+    <label for="nombre">Nombre de la Asignatura</label>
+    <input name="nombre" type="text" class="form-control" id="nombre" aria-describedby="asignaturaHelp" placeholder="Introduzca el nombre.">
   </div>
 
   <div class="form-group">
-    <label for="pwd">Password</label>
-    <input type="password" class="form-control" id="pwd" placeholder="Password">
-  </div>
-
-  <div id="errorsPwd" role="alert"> 
+    <label for="codigo">Codigo</label>
+    <input name="codigo" type="text" class="form-control" id="codigo" placeholder="Escriba el código identificador de la asignatura.">
   </div>
 
   <div class="form-group">
-  <label for="selector">Account</label>
-  <select id="selector" class="custom-select">
-        <option value="">Select an accout type...</option>
-        <option value="free">Free</option>
-        <option value="standard">Standard</option>
-        <option value="premium">Premium</option>
+  <label for="selector">Curso:</label>
+  <select id="selector" name="selector" class="custom-select">
+        <option value=""selected>Seleccione un curso..</option>
+        <option value="primero">Primero</option>
+        <option value="segundo">Segundo</option>
+        <option value="tercero">Tercero</option>
       </select>
   </div>
-    
-    <div id="errorsSelect" role="alert"> 
-    </div>
 
   <div class="form-group">
-    <label for="age">Age</label>
-    <input type="text" class="form-control" id="age" placeholder="Age">
-    <small class="form-text text-muted">Your age should be 18 or older.</small>
-  </div>
-
-  <div id="errorsAge" role="alert">
-  </div>
-
-<div class="form-group">
-  <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" id="terms">
-  <label class="custom-control-label" for="terms">I agree da terms</label>
-</div>
-</div>
-
-  <div id="errorsTerms" role="alert"> 
+    <label for="desc">Descripcción:</label>
+    <input name="desc" type="text" class="form-control" id="desc" placeholder="Descripccion de la asignatura.">
+    <small class="form-text text-muted">Recuerde introducir un mínimo de caracteres para proporcionar la suficiente información sobre la misma.</small>
   </div>
 
   <button type="submit" class="btn btn-primary">Submit</button>
 
-  <div class="modal fade" id="errorsForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="successForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Incorrect Data!</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <h5 class="modal-title" id="exampleModalLabel">Correct data!</h5>
       </div>
-      <div class="modal-body">
-      Check your form and correct the errors.
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      <div class="modal-body" id="modalText">
+        Sending...
+      <div class="progress">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+       </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="modal fade" id="successForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="successForm2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Correct data!</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <h5 class="modal-title" id="exampleModalLabel">Formulario enviado</h5>
       </div>
-      <div class="modal-body">
-      All the data is correct, you can now login.
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      <div class="modal-body" id="modalText">
       </div>
     </div>
   </div>
@@ -95,5 +63,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{ mix('/js/validation.js') }}" defer ></script>
+<script src="{{ mix('/js/validationAsync.js') }}" defer ></script>
 @endpush

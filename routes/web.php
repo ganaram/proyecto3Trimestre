@@ -14,3 +14,6 @@
 Route::get('/', function () {
     return view('public/index');
 });
+
+Route::post('/crearAjax','asignaturaController@create');
+
